@@ -1,451 +1,234 @@
-## <center>The Ultimate NeoVim Config for [Colemak](https://colemak.com/) Users</center>
-<center><a href="https://instaboard.page/gh-sponsor"><img src="https://user-images.githubusercontent.com/8187501/232345609-366fd597-8a32-4667-9e80-2487ebe6f7f6.png" alt="Sponsored by Instaboard"></img></a></center>
-<br/>
+# kickstart-modular.nvim
 
-<center><img src="https://raw.githubusercontent.com/theniceboy/nvim/master/demo.png"></center>
+## Introduction
 
-[中文版](./README_cn.md)
+*This is a fork of [nvim-lua/kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) that moves from a single file to a multi file configuration.*
 
-Please **DO NOT** just copy this configuration folder without really looking at it! Please, at least, read this README file!
+A starting point for Neovim that is:
 
-<!-- TOC GFM -->
+* Small
+* Modular
+* Completely Documented
 
-* [Requirements](#requirements)
-* [After Installation, You Need To](#after-installation-you-need-to)
-* [After Installation, You Might Want To](#after-installation-you-might-want-to)
-  - [First of all](#first-of-all)
-  - [For Python Debugger (via `vimspector`)](#for-python-debugger-via-vimspector)
-  - [Config `Python` path](#config-python-path)
-  - [For Taglist:](#for-taglist)
-  - [For FZF](#for-fzf)
-  - [And also...](#and-also)
-* [Keyboard Shortcuts](#keyboard-shortcuts)
-  - [1 Basic Editor Features](#1-basic-editor-features)
-    + [1.1 The Most Basics](#11-the-most-basics)
-    + [1.2 Remapped Cursor Movement](#12-remapped-cursor-movement)
-    + [1.3 Remapped Insert Mode Keys](#13-remapped-insert-mode-keys)
-    + [1.4 Remapped Text Manipulating Commands in Normal Mode](#14-remapped-text-manipulating-commands-in-normal-mode)
-    + [1.5 Other Useful Normal Mode Remappings](#15-other-useful-normal-mode-remappings)
-    + [1.6 Remapped Commands in Visual Mode](#16-remapped-commands-in-visual-mode)
-  - [2 Window Management](#2-window-management)
-    + [2.1 Creating Window Through Split Screen](#21-creating-window-through-split-screen)
-    + [2.2 Moving the Cursor Between Different Windows](#22-moving-the-cursor-between-different-windows)
-    + [2.3 Resizing Different Windows](#23-resizing-different-windows)
-    + [2.4 Closing Windows](#24-closing-windows)
-  - [3 Tab Management](#3-tab-management)
-  - [4 Terminal Keyboard Shortcuts](#4-terminal-keyboard-shortcuts)
-* [Plugins Keybindings (Screenshots/GIF provided!)](#plugins-keybindings-screenshotsgif-provided)
-  - [AutoCompletion](#autocompletion)
-    + [COC (AutoCompletion)](#coc-autocompletion)
-    + [coc-snippets](#coc-snippets)
-  - [File Navigation](#file-navigation)
-    + [coc-explorer (file browser)](#coc-explorer-file-browser)
-    + [rnvimr - file browser](#rnvimr---file-browser)
-    + [FZF - the fuzzy file finder](#fzf---the-fuzzy-file-finder)
-    + [xtabline (the fancy tab line)](#xtabline-the-fancy-tab-line)
-  - [Text Editing Plugins](#text-editing-plugins)
-    + [vim-table-mode](#vim-table-mode)
-    + [Undotree](#undotree)
-    + [vim-visual-multi](#vim-visual-multi)
-    + [vim-surround](#vim-surround)
-    + [vim-subversive](#vim-subversive)
-    + [vim-easy-align](#vim-easy-align)
-    + [AutoFormat](#autoformat)
-    + [vim-markdown-toc (generate table of contents for markdown files)](#vim-markdown-toc-generate-table-of-contents-for-markdown-files)
-  - [Navigation Within Buffer](#navigation-within-buffer)
-    + [Vista.vim](#vistavim)
-  - [Find and Replace](#find-and-replace)
-    + [Far.vim - find and replace](#farvim---find-and-replace)
-  - [Git Related](#git-related)
-    + [vim-gitgutter](#vim-gitgutter)
-    + [fzf-gitignore](#fzf-gitignore)
-  - [Others](#others)
-    + [vim-calendar](#vim-calendar)
-    + [Goyo - Work without distraction](#goyo---work-without-distraction)
-    + [suda.vim](#sudavim)
-    + [coc-translator](#coc-translator)
-* [Custom Snippets](#custom-snippets)
-  - [Markdown](#markdown)
-* [Some Weird Stuff](#some-weird-stuff)
-  - [Press `tx` and enter your text](#press-tx-and-enter-your-text)
-  - [Customized Vertical Cursor Movement](#customized-vertical-cursor-movement)
+**NOT** a Neovim distribution, but instead a starting point for your configuration.
 
-<!-- /TOC -->
+## Installation
 
-## Requirements
-- This nvim configuration **REQUIRES** NeoVim 0.6.0+
-## After Installation, You Need To
-- Install `pip3`, and do `pip3 install --user pynvim`
-- Install `node`, and do `npm install -g neovim`
-- Install nerd-fonts (actually it's optional but it looks real good)
+### Install Neovim
 
-## After Installation, You Might Want To
-### First of all
-- Do `:checkhealth`
+Kickstart.nvim targets *only* the latest
+['stable'](https://github.com/neovim/neovim/releases/tag/stable) and latest
+['nightly'](https://github.com/neovim/neovim/releases/tag/nightly) of Neovim.
+If you are experiencing issues, please make sure you have the latest versions.
 
-### For Python Debugger (via `vimspector`)
-- Install `debugpy` (`pip`)
+### Install External Dependencies
 
-### Config `Python` path
-- Well, make sure you have python
-- See `_machine_specific.vim`
+External Requirements:
+- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
+- [ripgrep](https://github.com/BurntSushi/ripgrep#installation)
+- Clipboard tool (xclip/xsel/win32yank or other depending on platform)
+- A [Nerd Font](https://www.nerdfonts.com/): optional, provides various icons
+  - if you have it set `vim.g.have_nerd_font` in `init.lua` to true
+- Language Setup:
+  - If want to write Typescript, you need `npm`
+  - If want to write Golang, you will need `go`
+  - etc.
 
-### For Taglist:
-- Install `ctags` for function/class/variable list
+> **NOTE**
+> See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
+> and quick install snippets
 
-### For FZF
-- Install `fzf`
-- Install `ag` (`the_silver_searcher`)
+### Install Kickstart
 
-### And also...
-- Install `figlet` for inputing text ASCII art
-- Install `xclip` for system clipboard access (`Linux` and `xorg` only)
+> **NOTE**
+> [Backup](#FAQ) your previous configuration (if any exists)
 
-## Keyboard Shortcuts
-### 1 Basic Editor Features
-#### 1.1 The Most Basics
-**`k`** : switchs to **`INSERT`** : mode (same as key `i` in vanilla vim)
+Neovim's configurations are located under the following paths, depending on your OS:
 
-**`Q`** : quits current vim window (same as command `:q` in vanilla vim)
+| OS | PATH |
+| :- | :--- |
+| Linux, MacOS | `$XDG_CONFIG_HOME/nvim`, `~/.config/nvim` |
+| Windows (cmd)| `%localappdata%\nvim\` |
+| Windows (powershell)| `$env:LOCALAPPDATA\nvim\` |
 
-**`S`** : saves the current file (same as command `:w` in vanilla vim)
+#### Recommended Step
 
-**_IMPORTANT_**
+[Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo
+so that you have your own copy that you can modify, then install by cloning the
+fork to your machine using one of the commands below, depending on your OS.
 
-  Since the `i` key has been mapped to `k`, every command (combination) that involves `i` should use `k` instead (for example, `ciw` should be `ckw`).
+> **NOTE**
+> Your fork's url will be something like this:
+> `https://github.com/<your_github_username>/kickstart-modular.nvim.git`
 
-#### 1.2 Remapped Cursor Movement
-| Shortcut   | Action                                                    | Equivalent |
-|------------|-----------------------------------------------------------|------------|
-| `u`        | Cursor up a terminal line                                 | `k`        |
-| `e`        | Cursor down a terminal line                               | `j`        |
-| `n`        | Cursor left                                               | `h`        |
-| `i`        | Cursor right                                              | `l`        |
-| `U`        | Cursor up 5 terminal lines                                | `5k`       |
-| `E`        | Cursor down 5 terminal lines                              | `5j`       |
-| `N`        | Cursor to the start of the line                           | `0`        |
-| `I`        | Cursor to the end of the line                             | `$`        |
-| `Ctrl` `u` | Move the view port up 5 lines without moving the cursor   | `Ctrl` `y` |
-| `Ctrl` `e` | Move the view port down 5 lines without moving the cursor | `Ctrl` `e` |
-| `h`        | Move to the end of this word                              | `e`        |
-| `W`        | Move cursor five words forward                            | `5w`       |
-| `B`        | Move cursor five words forward                            | `5b`       |
+#### Clone kickstart.nvim
+> **NOTE**
+> If following the recommended step above (i.e., forking the repo), replace
+> `dam9000` with `<your_github_username>` in the commands below
 
-#### 1.3 Remapped Insert Mode Keys
-| Shortcut   | Action                                                               |
-|------------|----------------------------------------------------------------------|
-| `Ctrl` `a` | Move cursor to the end of the line                                   |
-| `Ctrl` `u` | Move the character on the right of the cursor to the end of the line |
+<details><summary> Linux and Mac </summary>
 
-#### 1.4 Remapped Text Manipulating Commands in Normal Mode
-| Shortcut        | Action                                |
-|-----------------|---------------------------------------|
-| `l`             | **undo**                              |
-| `<`             | Un-indent                             |
-| `>`             | Indent                                |
-| `SPACE` `SPACE` | Goto the next placeholder (`<++>`)    |
-
-#### 1.5 Other Useful Normal Mode Remappings
-| Shortcut        | Action                                         |
-|-----------------|------------------------------------------------|
-| `r`             | **Compile/Run the current file**               |
-| `SPACE` `s` `c` | Toggle spell suggestion a                      |
-| `SPACE` `d` `w` | Find adjacent duplicated word                  |
-| `SPACE` `t` `t` | Convert every 4 Spaces to a tab                |
-| `SPACE` `o`     | Fold                                           |
-| `SPACE` `-`     | Previous quick-fix position                    |
-| `SPACE` `+`     | Next quick-fix position                        |
-| `\` `p`         | Show the path of the current file              |
-| `SPACE` `/`     | Create a new terminal below the current window |
-
-#### 1.6 Remapped Commands in Visual Mode
-| Shortcut        | Action                                 |
-|-----------------|----------------------------------------|
-| `Y`             | Copy selected text to system clipboard |
-
-
-### 2 Window Management
-#### 2.1 Creating Window Through Split Screen
-| Shortcut    | Action                                                                      |
-|-------------|-----------------------------------------------------------------------------|
-| `s` `u`     | Create a new horizontal split screen and place it above the current window  |
-| `s` `e`     | Create a new horizontal split screen and place it below the current window  |
-| `s` `n`     | Create a new vertical split screen and place it left to the current window  |
-| `s` `i`     | Create a new vertical split screen and place it right to the current window |
-| `s` `v`     | Set the two splits to be vertical                                           |
-| `s` `h`     | Set the two splits to be horizontal                                         |
-| `s` `r` `v` | Rotate splits and arrange splits vertically                                 |
-| `s` `r` `h` | Rotate splits and arrange splits horizontally                               |
-
-#### 2.2 Moving the Cursor Between Different Windows
-| Shortcut      | Action                         |
-|---------------|--------------------------------|
-| `SPACE` + `w` | Move cursor to the next window |
-| `SPACE` + `n` | Move cursor one window left    |
-| `SPACE` + `i` | Move cursor one window right   |
-| `SPACE` + `u` | Move cursor one window up      |
-| `SPACE` + `e` | Move cursor one window down    |
-
-#### 2.3 Resizing Different Windows
-Use the arrow keys to resize the current window.
-
-#### 2.4 Closing Windows
-| Shortcut    | Action                                                                                                     |
-|-------------|------------------------------------------------------------------------------------------------------------|
-| `Q`         | Close the current window                                                                                   |
-| `SPACE` `q` | Close the window below the current window. (The current window will be closed if there is no window below) |
-
-### 3 Tab Management
-| Shortcut    | Action           |
-|-------------|------------------|
-| `t` `u`     | Create a new tab |
-| `t` `n`     | Go one tab left  |
-| `t` `i`     | Go One tab right |
-| `t` `m` `n` | Move tab left    |
-| `t` `m` `i` | Move tab right   |
-
-### 4 Terminal Keyboard Shortcuts
-| Shortcut    | Action                                                      |
-|-------------|-------------------------------------------------------------|
-| `Ctrl` `n`  | Escape from terminal input mode                             |
-
-## Plugins Keybindings (Screenshots/GIF provided!)
-### AutoCompletion
-#### [COC (AutoCompletion)](https://github.com/neoclide/coc.nvim)
-| Shortcut        | Action                    |
-|-----------------|---------------------------|
-| `Space` `y`     | **Get yank history list** |
-| `gd`            | Go to definition          |
-| `gr`            | List references           |
-| `gi`            | List implementation       |
-| `gy`            | Go to type definition     |
-| `Space` `r` `n` | Rename a variable         |
-
-<img alt="Gif" src="https://user-images.githubusercontent.com/251450/55285193-400a9000-53b9-11e9-8cff-ffe4983c5947.gif" width="60%" />
-
-#### [coc-snippets](https://github.com/neoclide/coc-snippets)
-| Shortcut   | Action                                           |
-|------------|--------------------------------------------------|
-| `Ctrl` `e` | Expand a snippet                                 |
-| `Ctrl` `n` | (in snippet) Previous Cursor position in snippet |
-| `Ctrl` `e` | (in snippet) Next Cursor position in snippet     |
-
-![GIF Demo](https://raw.github.com/SirVer/ultisnips/master/doc/demo.gif)
-
-### File Navigation
-#### [coc-explorer (file browser)](https://github.com/weirongxu/coc-explorer)
-| Shortcut | Action                  |
-|----------|-------------------------|
-| `tt`     | **Open file browser**   |
-| `?`      | show help (in explorer) |
-
-<img alt="Png" src="https://user-images.githubusercontent.com/1709861/64966850-1e9f5100-d8d2-11e9-9490-438c6d1cf378.png" width="60%" />
-
-#### [rnvimr - file browser](https://github.com/kevinhwang91/rnvimr)
-- [ ] Make sure you have ranger installed
-
-Press `R` to open Ranger (file selector)
-
-And Within rnvimr (ranger), you can:
-| Shortcut   | Action                             |
-|------------|------------------------------------|
-| `Ctrl` `t` | Open the file in a new tab         |
-| `Ctrl` `x` | Split up and down with the file    |
-| `Ctrl` `v` | Split left and right with the file |
-
-<img alt="Gif" src="https://user-images.githubusercontent.com/17562139/74416173-b0aa8600-4e7f-11ea-83b5-31c07c384af1.gif" width="60%" />
-
-#### [FZF - the fuzzy file finder](https://github.com/junegunn/fzf.vim)
-| Shortcut   | Action             |
-|------------|--------------------|
-| `Ctrl` `p` | **FZF Files**      |
-| `Ctrl` `u` | Move up 1 item     |
-| `Ctrl` `e` | Move down 1 item   |
-| `Ctrl` `w` | FZF Buffers        |
-| `Ctrl` `f` | FZF Files' Content |
-| `Ctrl` `h` | FZF Recent Files   |
-| `Ctrl` `t` | FZF Tags           |
-
-<img alt="Gif" src="https://jesseleite.com/uploads/posts/2/tag-finder-opt.gif" width="60%" />
-
-#### [xtabline (the fancy tab line)](https://github.com/mg979/vim-xtabline)
-| Shortcut | What it creates   |
-|----------|-------------------|
-| `to`     | Cycle tab mode    |
-| `\p`     | Show current path |
-
-<img alt="Gif" src="https://i.imgur.com/yU6qbU5.gif" width="60%" />
-
-### Text Editing Plugins
-#### [vim-table-mode](https://github.com/dhruvasagar/vim-table-mode)
-| Shortcut        | Action            |
-|-----------------|-------------------|
-| `SPACE` `t` `m` | Toggle table mode |
-| `SPACE` `t` `r` | Realign table     |
-
-See `:help table-mode.txt` for more.
-
-#### [Undotree](https://github.com/mbbill/undotree)
-| Shortcut      | Action        |
-|---------------|---------------|
-| `Shift` + `L` | Open Undotree |
-| `u`           | Newer Version |
-| `e`           | Older Version |
-
-<img alt="Png" src="https://camo.githubusercontent.com/56430626a5444ea2f0249d71f9288775277c7f5d/68747470733a2f2f73697465732e676f6f676c652e636f6d2f736974652f6d6262696c6c2f756e646f747265655f6e65772e706e67" width="60%" />
-
-#### [vim-visual-multi](https://github.com/mg979/vim-visual-multi)
-| Shortcut   | Action                                           |
-|------------|--------------------------------------------------|
-| `Ctrl`+`k` | **Select next key (multiple cursors)**           |
-| `q`        | **Deselect the current keys (multiple cursors)** |
-| `-`        | Select the previous key                          |
-| `=`        | Select the next key                              |
-| `Esc`      | Quit mutiple cursors                             |
-
-<img alt="Gif" src="https://raw.githubusercontent.com/terryma/vim-multiple-cursors/master/assets/example1.gif" width="60%" />
-<img alt="Gif" src="https://raw.githubusercontent.com/terryma/vim-multiple-cursors/master/assets/example2.gif" width="60%" />
-<img alt="Gif" src="https://raw.githubusercontent.com/terryma/vim-multiple-cursors/master/assets/example3.gif" width="60%" />
-<img alt="Gif" src="https://raw.githubusercontent.com/terryma/vim-multiple-cursors/master/assets/example4.gif" width="60%" />
-
-#### [vim-surround](https://github.com/tpope/vim-surround)
-To add surround (`string` -> `"string"`):
-```
-string
-```
-press: `yskw'`:
-```
-'string'
+```sh
+git clone https://github.com/dam9000/kickstart-modular.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
-To change surround
+</details>
+
+<details><summary> Windows </summary>
+
+If you're using `cmd.exe`:
+
 ```
-'string'
-```
-press: `cs'"`:
-```
-"string"
-```
-
-<img alt="Gif" src="https://two-wrongs.com/image/surround_vim.gif" width="60%" />
-
-#### [vim-subversive](https://github.com/svermeulen/vim-subversive)
-New operator: `s`:
-
-You can execute `s<motion>` to substitute the text object provided by the motion with the contents of the default register (or an explicit register if provided). For example, you could execute `skw` to replace the current word under the cursor with the current yank, or `skp` to replace the paragraph, etc.
-
-#### [vim-easy-align](https://github.com/junegunn/vim-easy-align)
-Press `ga` + **symbol** in normal or visual mode to align text based on **symbol**
-
-<img alt="Gif" src="https://raw.githubusercontent.com/junegunn/i/master/easy-align/equals.gif" width="60%" />
-
-#### [AutoFormat](https://github.com/Chiel92/vim-autoformat)
-Press `\` `f` to format code
-
-#### [vim-markdown-toc (generate table of contents for markdown files)](https://github.com/mzlogin/vim-markdown-toc)
-In `markdown` files, type `:Gen` then tab, you'll see your options.
-
-<img alt="Gif" src="https://raw.githubusercontent.com/mzlogin/vim-markdown-toc/master/screenshots/english.gif" width="60%" />
-
-### Navigation Within Buffer
-#### [Vista.vim](https://github.com/liuchengxu/vista.vim)
-Press `T` to toggle function and variable list
-
-<img alt="Gif" src="https://user-images.githubusercontent.com/8850248/56469894-14d40780-6472-11e9-802f-729ac53bd4d5.gif" width="60%" />
-
-### Find and Replace
-#### [Far.vim - find and replace](https://github.com/brooth/far.vim)
-Press `SPACE` `f` `r` to search in cwd.
-
-<img alt="Gif" src="https://cloud.githubusercontent.com/assets/9823254/20861878/77dd1882-b9b4-11e6-9b48-8bc60f3d7ec0.gif" width="60%" />
-
-### Git Related
-#### [vim-gitgutter](https://github.com/airblade/vim-gitgutter)
-| Shortcut        | Action                            |
-|-----------------|-----------------------------------|
-| `H`             | **Show git hunk at current line** |
-| `SPACE` `g` `-` | Go to previous git hunk           |
-| `SPACE` `g` `+` | Go to next git hunk               |
-| `SPACE` `g` `f` | Fold everything except hunks      |
-
-#### [fzf-gitignore](https://github.com/fszymanski/fzf-gitignore)
-Press `Space` `g` `i` to create a `.gitignore` file
-
-<img alt="Png" src="https://user-images.githubusercontent.com/25827968/42945393-96c662da-8b68-11e8-8279-5bcd2e956ca9.png" width="60%" />
-
-<img alt="Png" src="https://raw.githubusercontent.com/airblade/vim-gitgutter/master/screenshot.png" width="60%" />
-
-### Others
-#### [vim-calendar](https://github.com/itchyny/calendar.vim)
-| Shortcut | Action        |
-|----------|---------------|
-| `\` `\`  | Show clock    |
-| `\` `c`  | Show calendar |
-
-<img alt="Png" src="https://raw.githubusercontent.com/wiki/itchyny/calendar.vim/image/image.png" width="60%" />
-
-#### [Goyo - Work without distraction](https://github.com/junegunn/goyo.vim)
-Press `g` `y` to toggle Goyo
-
-<img alt="Png" src="https://raw.github.com/junegunn/i/master/goyo.png" width="60%" />
-
-#### [suda.vim](https://github.com/lambdalisue/suda.vim)
-Forgot to `sudo vim ...`? Just do `:sudowrite` or `:sw`
-
-#### [coc-translator](https://github.com/voldikss/coc-translator)
-Press `ts` to **translate word under cursor**.
-
-<img alt="Png" src="https://user-images.githubusercontent.com/20282795/72232547-b56be800-35fc-11ea-980a-3402fea13ec1.png" width="60%" />
-
-## Custom Snippets
-### Markdown
-| Shortcut | What it creates     |
-|----------|---------------------|
-| `,n`     | ---                 |
-| `,b`     | **Bold** text       |
-| `,s`     | ~~sliced~~ text     |
-| `,i`     | *italic* text       |
-| `,d`     | `code block`        |
-| `,c`     | big `block of code` |
-| `,m`     | - [ ] check mark    |
-| `,p`     | picture             |
-| `,a`     | [link]()            |
-| `,1`     | # H1                |
-| `,2`     | ## H2               |
-| `,3`     | ### H3              |
-| `,4`     | #### H4             |
-| `,l`     | --------            |
-
-`,f` to go to the next `<++>` (placeholder)
-
-`,w` to go to the next `<++>` (placeholder) and then press `Enter` for you
-
-## Some Weird Stuff
-### Press `tx` and enter your text
-`tx Hello<Enter>`
-```
- _   _      _ _
-| | | | ___| | | ___
-| |_| |/ _ \ | |/ _ \
-|  _  |  __/ | | (_) |
-|_| |_|\___|_|_|\___/
+git clone https://github.com/dam9000/kickstart.nvim.git %localappdata%\nvim\
 ```
 
-### Customized Vertical Cursor Movement
+If you're using `powershell.exe`
 
-This NeoVim configuration includes a customized vertical cursor movement tailored for Colemak users. It can be located in `cursor.vim`, and it serves as an alternative to the "number + up/down" key combination.
+```
+git clone https://github.com/dam9000/kickstart.nvim.git $env:LOCALAPPDATA\nvim\
+```
 
-In order to move the cursor up `x` lines, press the `[` key, and treat the middle row of the Colemak keyboard layout ("arstdhneio") as number 1 to 0. Press the numbers that you'd like your cursor to move (`x`) and press the space bar.
+</details>
 
-To move the cursor down, press the `'` key instead of the `[` key, and the rest would be the same.
+### Post Installation
 
-Example:
-| Shortcut                | Action                         |
-|-------------------------|--------------------------------|
-| `[` `a` `o` `o` `SPACE` | Move the cursor up 100 lines   |
-| `'` `a` `r` `s` `SPACE` | Move the cursor down 123 lines |
-| `[` `d` `o` `SPACE`     | Move the cursor up 50 lines    |
+Start Neovim
 
-**Note: As of now, you may only move vertically up to 199 lines with this key configuration!**
+```sh
+nvim
+```
 
-# nvim
+That's it! Lazy will install all the plugins you have. Use `:Lazy` to view
+current plugin status. Hit `q` to close the window.
+
+Read through the `init.lua` file in your configuration folder for more
+information about extending and exploring Neovim. That also includes
+examples of adding popularly requested plugins.
+
+
+### Getting Started
+
+[The Only Video You Need to Get Started with Neovim](https://youtu.be/m8C0Cq9Uv9o)
+
+### FAQ
+
+* What should I do if I already have a pre-existing neovim configuration?
+  * You should back it up and then delete all associated files.
+  * This includes your existing init.lua and the neovim files in `~/.local`
+    which can be deleted with `rm -rf ~/.local/share/nvim/`
+* Can I keep my existing configuration in parallel to kickstart?
+  * Yes! You can use [NVIM_APPNAME](https://neovim.io/doc/user/starting.html#%24NVIM_APPNAME)`=nvim-NAME`
+    to maintain multiple configurations. For example, you can install the kickstart
+    configuration in `~/.config/nvim-kickstart` and create an alias:
+    ```
+    alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
+    ```
+    When you run Neovim using `nvim-kickstart` alias it will use the alternative
+    config directory and the matching local directory
+    `~/.local/share/nvim-kickstart`. You can apply this approach to any Neovim
+    distribution that you would like to try out.
+* What if I want to "uninstall" this configuration:
+  * See [lazy.nvim uninstall](https://github.com/folke/lazy.nvim#-uninstalling) information
+* Why is the kickstart `init.lua` a single file? Wouldn't it make sense to split it into multiple files?
+  * The main purpose of kickstart is to serve as a teaching tool and a reference
+    configuration that someone can easily use to `git clone` as a basis for their own.
+    As you progress in learning Neovim and Lua, you might consider splitting `init.lua`
+    into smaller parts. A fork of kickstart that does this while maintaining the 
+    same functionality is available here:
+    * [kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim)
+  * *NOTE: This is the fork that splits the configuration into smaller parts.*
+    The original repo with the single `init.lua` file is available here:
+    * [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
+  * Discussions on this topic can be found here:
+    * [Restructure the configuration](https://github.com/nvim-lua/kickstart.nvim/issues/218)
+    * [Reorganize init.lua into a multi-file setup](https://github.com/nvim-lua/kickstart.nvim/pull/473)
+
+### Install Recipes
+
+Below you can find OS specific install instructions for Neovim and dependencies.
+
+After installing all the dependencies continue with the [Install Kickstart](#Install-Kickstart) step.
+
+#### Windows Installation
+
+<details><summary>Windows with Microsoft C++ Build Tools and CMake</summary>
+Installation may require installing build tools and updating the run command for `telescope-fzf-native`
+
+See `telescope-fzf-native` documentation for [more details](https://github.com/nvim-telescope/telescope-fzf-native.nvim#installation)
+
+This requires:
+
+- Install CMake and the Microsoft C++ Build Tools on Windows
+
+```lua
+{'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+```
+</details>
+<details><summary>Windows with gcc/make using chocolatey</summary>
+Alternatively, one can install gcc and make which don't require changing the config,
+the easiest way is to use choco:
+
+1. install [chocolatey](https://chocolatey.org/install)
+either follow the instructions on the page or use winget,
+run in cmd as **admin**:
+```
+winget install --accept-source-agreements chocolatey.chocolatey
+```
+
+2. install all requirements using choco, exit previous cmd and
+open a new one so that choco path is set, and run in cmd as **admin**:
+```
+choco install -y neovim git ripgrep wget fd unzip gzip mingw make
+```
+</details>
+<details><summary>WSL (Windows Subsystem for Linux)</summary>
+
+```
+wsl --install
+wsl
+sudo add-apt-repository ppa:neovim-ppa/unstable -y
+sudo apt update
+sudo apt install make gcc ripgrep unzip git xclip neovim
+```
+</details>
+
+#### Linux Install
+<details><summary>Ubuntu Install Steps</summary>
+
+```
+sudo add-apt-repository ppa:neovim-ppa/unstable -y
+sudo apt update
+sudo apt install make gcc ripgrep unzip git xclip neovim
+```
+</details>
+<details><summary>Debian Install Steps</summary>
+
+```
+sudo apt update
+sudo apt install make gcc ripgrep unzip git xclip curl
+
+# Now we install nvim
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+sudo rm -rf /opt/nvim-linux64
+sudo mkdir -p /opt/nvim-linux64
+sudo chmod a+rX /opt/nvim-linux64
+sudo tar -C /opt -xzf nvim-linux64.tar.gz
+
+# make it available in /usr/local/bin, distro installs to /usr/bin
+sudo ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/
+```
+</details>
+<details><summary>Fedora Install Steps</summary>
+
+```
+sudo dnf install -y gcc make git ripgrep fd-find unzip neovim
+```
+</details>
+
+<details><summary>Arch Install Steps</summary>
+
+```
+sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
+```
+</details>
+
