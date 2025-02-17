@@ -65,6 +65,7 @@ vim.o.shiftwidth = 2
 vim.o.softtabstop = 2
 vim.o.tabstop = 2
 
+-- local dracula = require("dracula")
 -- vim.cmd("set tabstop=2")
 -- vim.cmd("set expandtab")
 -- vim.cmd("softtabstop=2")
